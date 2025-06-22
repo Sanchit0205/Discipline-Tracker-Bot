@@ -1,0 +1,21 @@
+# Ignore Python cache and environment
+__pycache__/
+*.pyc
+
+# Ignore your local virtualenv if any
+.venv/
+env/
+venv/
+
+# Ignore your bot token file if using
+.env
+
+# Ignore JSON data files
+*.json
+
+# Ignore VS Code settings
+.vscode/
+
+*.txt
+
+.env
