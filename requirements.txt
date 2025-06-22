@@ -3,3 +3,4 @@ aiohttp
 asyncio
 python-dotenv
 flask
+apscheduler

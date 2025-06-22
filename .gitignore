@@ -21,3 +21,4 @@ venv/
 # Ignore these specific text files
 habit_log.txt
 backup.txt
+replit.txt
