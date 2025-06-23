@@ -1,0 +1,53 @@
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler, filters
+from keep_alive import keep_alive
+import asyncio, nest_asyncio
+import asyncio
+from commands.start import start, my_settings
+from commands.workout import set_workout, show_today_workouts, todays_progress, button_handler, handle_workout_count
+from commands.goal import set_goal, check_status
+from commands.sleep import set_sleep_time, log_sleep, sleep_status
+from commands.reminders import set_reminder, start_scheduler
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+TOKEN = os.getenv("BOT_TOKEN")
+if not TOKEN:
+    raise ValueError("❌ BOT_TOKEN not found. Check your .env file and variable name.")
+
+# Start bot
+keep_alive()
+nest_asyncio.apply()
+
+async def main():
+    app = ApplicationBuilder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("setworkout", set_workout))
+    app.add_handler(CommandHandler("setgoal", set_goal))
+    app.add_handler(CommandHandler("status", check_status))
+    app.add_handler(CommandHandler("today", show_today_workouts))
+    app.add_handler(CommandHandler("todaysprogress", todays_progress))
+    app.add_handler(CommandHandler("setreminder", set_reminder))
+    app.add_handler(CommandHandler("setsleeptime", set_sleep_time))
+    app.add_handler(CommandHandler("sleeplog", log_sleep))
+    app.add_handler(CommandHandler("sleepstatus", sleep_status))
+    app.add_handler(CommandHandler("mysettings", my_settings))
+    app.add_handler(CallbackQueryHandler(button_handler))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_workout_count))
+
+    await start_scheduler(app)
+    await app.run_polling()
+
+if __name__ == '__main__':
+    try:
+        asyncio.run(main())
+    except RuntimeError as e:
+        # Fallback for "event loop is already running"
+        if "already running" in str(e):
+            nest_asyncio.apply()
+            loop = asyncio.get_event_loop()
+            loop.create_task(main())
+            loop.run_forever()
+        else:
+            raise

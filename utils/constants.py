@@ -1,0 +1,12 @@
+# Files
+STREAK_FILE = "streaks.json"
+USER_FILE = "users.json"
+WORKOUT_FILE = "workouts.json"
+PROGRESS_FILE = "progress.json"
+GOAL_FILE = "goals.json"
+REMINDER_FILE = "reminders.json"
+WAITING_COUNT_FILE = "waiting_count.json"
+SLEEP_FILE = "sleep.json"
+SLEEP_SENT_FILE = "sleep_sent.json"
+WORKOUT_SENT_FILE = "workout_sent.json"
+SLEEP_REMINDER_FILE = "sleep_reminders.json"
