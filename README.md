@@ -1,99 +1,107 @@
+# 🧠 Discipline Tracker Bot [Telegram]
 
-# 🏋️‍♂️ Discipline Tracker Bot
-
-A simple, personal Telegram bot built using `python-telegram-bot` to track your daily workout streaks for 21 days (or a custom goal)!
-
-✅ Set your workouts  
-✅ Set a daily reminder time  
-✅ Track your streak day by day  
-✅ Mark completed workouts using inline buttons  
-✅ View your progress any time  
+A smart Telegram bot to help you build habits, stay consistent, and reach your fitness & lifestyle goals — now powered with **AI coaching** 💪🧠
 
 ---
 
-## 📦 Features
+## 🚀 Features
 
-- `/start` — Start the bot and register yourself
-- `/setworkout` — Set your workout list (comma-separated)
-- `/setgoal` — Set your target streak goal (in days)
-- `/setreminder` — Set a daily reminder time (24hr format)
-- `/mysettings` — View your current workout list, goal, and reminder time
-- `/status` — Check your current streak and progress
-- `/today` — View today’s workout tasks with inline buttons to mark as done
-- `/todaysprogress` — See completed and remaining tasks for today
-- `/menu` — Quick reply keyboard for `/setworkout` and `/setreminder`
+### 🏋️ Habit & Workout Tracking
+- `/setworkout` – Choose your daily workouts (e.g. pushups, squats)
+- `/today` – Log today’s workouts with interactive buttons
+- `/todaysprogress` – See what you’ve completed and what’s pending
+- `/status` – View your current streak, last update, and goal
+
+### 💤 Sleep Tracking
+- `/sleeplog` – Log how many hours you slept last night
+- `/sleepstatus` – View your 7-day average sleep
+
+### ⏰ Daily Reminders
+- `/setreminder` – Set workout reminder time
+- `/setsleeptime` – Set sleep reminder time
+
+### 🎯 Goal Setting & Progress
+- `/setgoal` – Set your consistency goal in days
+- `/mysettings` – View all your current setup (workouts, goal, reminders)
 
 ---
 
-## 📂 Project Structure
+## 🤖 NEW! AI-Powered Coach
+> Let the bot talk to you like a **personal buddy + trainer**
 
-```
+- `/coach I'm feeling lazy today`  
+  → Get motivating, funny, or tough-love responses based on your streak, workouts & mood!
+
+- Personalised replies based on:
+  - Streak history
+  - Sleep & workout data
+  - Your recent conversations
+
+---
+
+## 💬 Feedback
+Use `/feedback` to send your thoughts and help improve the bot! Every input matters.
+
+---
+
+## 📁 Project Structure
+
 Mission21Bot/
-├── bot.py                # Main bot code
-├── keep_alive.py         # Keep-alive server for Replit (if needed)
-├── .env                  # Your Telegram bot token (not committed)
-├── .gitignore
-├── requirements.txt
-├── streaks.json          # User streak data
-├── users.json            # User ID list
-├── workouts.json         # User workouts
-├── progress.json         # Daily progress log
-├── goals.json            # User goal targets
-├── reminders.json        # User reminder times
-└── README.md
-```
+│
+├── main.py # Starts bot, routes all commands
+├── keep_alive.py # Uptime support (for Replit)
+├── .env # Secure bot token
+│
+├── commands/ # Command handlers
+│ ├── coach.py
+│ ├── workout.py
+│ ├── sleep.py
+│ ├── goal.py
+│ ├── reminders.py
+│ ├── feedback.py
+│
+├── utils/ # Reusable logic
+│ ├── json_store.py
+│ ├── constants.py
+│ ├── timezone.py
+│ └── escape.py
+│
+├── prompts/ # Gemini/AI prompt generators
+│ └── coach_prompt.py
+│
+├── data/ # All user data (JSON files)
+│ ├── workouts.json
+│ ├── streaks.json
+│ ├── coach_history.json
+│ └── ...
+
+
 
 ---
 
-## 🔒 Environment Variables
+## 🔧 Tech Stack
 
-Create a `.env` file in your project root with:
-
-```
-BOT_TOKEN=your-telegram-bot-token-here
-```
-
-**Note:** Never commit this file to GitHub.  
-It's already listed in `.gitignore`.
+- **Python 3.10+**
+- `python-telegram-bot` v20+
+- **APScheduler** for reminders
+- **Google Gemini API** (for AI replies)
+- **Replit + UptimeRobot** (for free deployment)
 
 ---
 
-## 📦 Install Dependencies
-
-Install all required Python packages with:
-
-```bash
-pip install -r requirements.txt
-```
+## 📦 Coming Soon
+- 📊 Weekly / Monthly summary reports
+- 🏆 Badge + leaderboard system
+- 🤝 Group challenge support
+- More AI features: mood tracking, dynamic suggestions
 
 ---
 
-## 🚀 Run the Bot
+## 🛡️ License
 
-To run locally:
-
-```bash
-python bot.py
-```
-
-To deploy on **Replit** with `keep_alive` for 24/7 uptime, make sure `keep_alive.py` is properly configured.
+MIT License – Free to use, improve, and share.
 
 ---
 
-## 📌 Notes
-
-- This bot uses **JSON files for data storage** (streaks, users, workouts, progress, etc.)
-- You can deploy it on **Replit + UptimeRobot** for continuous uptime.
-- Or test and run locally using **VS Code / Terminal**.
-
----
-
-## 📖 License
-
-MIT — Free to use, learn, and improve.
-
----
-
-## ✨ Author
-
-Made with ❤️ by **Sanchit Chavan**
+### 👤 Made with consistency by [Your Name] 🙌  
+> "Discipline is choosing what you want most over what you want now."
