@@ -9,6 +9,11 @@ from commands.sleep import set_sleep_time, log_sleep, sleep_status
 from commands.reminders import set_reminder, start_scheduler
 from dotenv import load_dotenv
 import os
+from commands.coach import coach
+from commands.analyze import analyze
+from commands.suggest import suggest
+from commands.feedback import feedback
+
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
@@ -35,6 +40,11 @@ async def main():
     app.add_handler(CommandHandler("mysettings", my_settings))
     app.add_handler(CallbackQueryHandler(button_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_workout_count))
+    app.add_handler(CommandHandler("coach", coach))
+    app.add_handler(CommandHandler("analyze", analyze))
+    app.add_handler(CommandHandler("suggest", suggest))
+    app.add_handler(CommandHandler("feedback", feedback))
+
 
     await start_scheduler(app)
     await app.run_polling()
