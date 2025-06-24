@@ -27,6 +27,7 @@ A smart Telegram bot to help you build habits, stay consistent, and reach your f
 ---
 
 ## 🤖 NEW! AI-Powered Coach
+
 > Let the bot talk to you like a **personal buddy + trainer**
 
 - `/coach I'm feeling lazy today`  
@@ -39,6 +40,13 @@ A smart Telegram bot to help you build habits, stay consistent, and reach your f
 
 ---
 
+## 📊 Analyze & 💡 Suggest
+
+- `/analyze` – Get weekly/monthly summaries of your progress
+- `/suggest` – Get smart workout/habit suggestions from AI based on your performance
+
+---
+
 ## 💬 Feedback
 Use `/feedback` to send your thoughts and help improve the bot! Every input matters.
 
@@ -46,10 +54,13 @@ Use `/feedback` to send your thoughts and help improve the bot! Every input matt
 
 ## 📁 Project Structure
 
+```
 Mission21Bot/
 │
 ├── main.py                  # 🚀 Entry point: starts the Telegram bot and routes all commands
 ├── keep_alive.py            # 🌐 Keeps bot alive on Replit or similar platforms
+├── notify_users.py          # 📢 Sends update notifications to all users
+├── requirements.txt         # 📦 Python package dependencies
 ├── .env                     # 🔐 Environment variables (e.g., bot token, API keys)
 │
 ├── commands/                # 💬 Telegram command handlers
@@ -58,23 +69,28 @@ Mission21Bot/
 │   ├── sleep.py             # 💤 Tracks sleep routines
 │   ├── goal.py              # 🎯 Goal setting and management
 │   ├── reminders.py         # ⏰ Reminder system
-│   └── feedback.py          # 📩 Collects user feedback
+│   ├── feedback.py          # 📩 Collects user feedback
+│   ├── analyze.py           # 📊 Weekly/monthly user stats and progress
+│   ├── suggest.py           # 💡 Suggests workouts/habits based on data
+│   └── start.py             # 👋 Welcome/start command with onboarding info
 │
 ├── utils/                   # 🔧 Utility modules
 │   ├── json_store.py        # 📦 JSON read/write helpers
 │   ├── constants.py         # 📘 Shared constants
-│   ├── timezone.py          # 🕒 Timestamp in IST
-│   └── escape.py            # 🔒 Escape user input for safety
+│   ├── timezone.py          # 🕒 IST timestamp generator
+│   ├── escape.py            # 🔒 Input sanitization
+│   ├── gemini.py            # 🤖 Gemini AI interaction logic
+│   └── waiting_state.py     # ⏳ Track user waiting states (like pending replies)
 │
 ├── prompts/                 # 🧠 Prompt generators for Gemini AI
-│   └── coach_prompt.py      # 💬 Builds personality-based prompt for the AI coach
+│   └── coach_prompt.py      # 🗣️ Builds personality-based prompt for AI Coach
 │
 ├── data/                    # 🗃️ Persistent user data storage (JSON)
-│   ├── workouts.json        # Workout logs per user
-│   ├── streaks.json         # User streaks and consistency
-│   ├── coach_history.json   # AI conversation history
-│   └── ...                  # Other user data files
-
+│   ├── workouts.json        # 🏋️ Workout logs per user
+│   ├── streaks.json         # 🔥 User streaks and consistency
+│   ├── coach_history.json   # 🧠 AI conversation memory
+│   └── ...                  # 📁 Other per-user data files
+```
 
 ---
 
@@ -82,17 +98,17 @@ Mission21Bot/
 
 - **Python 3.10+**
 - `python-telegram-bot` v20+
-- **APScheduler** for reminders
-- **Google Gemini API** (for AI replies)
-- **Replit + UptimeRobot** (for free deployment)
+- **APScheduler** for scheduling reminders
+- **Google Gemini API** – for AI coaching replies
+- **Replit + UptimeRobot** – for free bot hosting
 
 ---
 
 ## 📦 Coming Soon
 - 📊 Weekly / Monthly summary reports
-- 🏆 Badge + leaderboard system
+- 🏆 Badges & leaderboard system
 - 🤝 Group challenge support
-- More AI features: mood tracking, dynamic suggestions
+- 🧠 More AI features: mood tracking, goal coaching, custom voice tones
 
 ---
 
