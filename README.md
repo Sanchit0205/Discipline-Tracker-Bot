@@ -48,33 +48,32 @@ Use `/feedback` to send your thoughts and help improve the bot! Every input matt
 
 Mission21Bot/
 │
-├── main.py # Starts bot, routes all commands
-├── keep_alive.py # Uptime support (for Replit)
-├── .env # Secure bot token
+├── main.py                  # 🚀 Entry point: starts the Telegram bot and routes all commands
+├── keep_alive.py            # 🌐 Keeps bot alive on Replit or similar platforms
+├── .env                     # 🔐 Environment variables (e.g., bot token, API keys)
 │
-├── commands/ # Command handlers
-│ ├── coach.py
-│ ├── workout.py
-│ ├── sleep.py
-│ ├── goal.py
-│ ├── reminders.py
-│ ├── feedback.py
+├── commands/                # 💬 Telegram command handlers
+│   ├── coach.py             # ↪️ Handles AI Coach interactions
+│   ├── workout.py           # 🏋️ Logs and tracks workouts
+│   ├── sleep.py             # 💤 Tracks sleep routines
+│   ├── goal.py              # 🎯 Goal setting and management
+│   ├── reminders.py         # ⏰ Reminder system
+│   └── feedback.py          # 📩 Collects user feedback
 │
-├── utils/ # Reusable logic
-│ ├── json_store.py
-│ ├── constants.py
-│ ├── timezone.py
-│ └── escape.py
+├── utils/                   # 🔧 Utility modules
+│   ├── json_store.py        # 📦 JSON read/write helpers
+│   ├── constants.py         # 📘 Shared constants
+│   ├── timezone.py          # 🕒 Timestamp in IST
+│   └── escape.py            # 🔒 Escape user input for safety
 │
-├── prompts/ # Gemini/AI prompt generators
-│ └── coach_prompt.py
+├── prompts/                 # 🧠 Prompt generators for Gemini AI
+│   └── coach_prompt.py      # 💬 Builds personality-based prompt for the AI coach
 │
-├── data/ # All user data (JSON files)
-│ ├── workouts.json
-│ ├── streaks.json
-│ ├── coach_history.json
-│ └── ...
-
+├── data/                    # 🗃️ Persistent user data storage (JSON)
+│   ├── workouts.json        # Workout logs per user
+│   ├── streaks.json         # User streaks and consistency
+│   ├── coach_history.json   # AI conversation history
+│   └── ...                  # Other user data files
 
 
 ---
