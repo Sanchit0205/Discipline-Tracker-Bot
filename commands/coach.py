@@ -1,34 +1,47 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 from datetime import datetime, timedelta
-from utils.json_store import load_json
+from utils.json_store import load_json, save_json
 from utils.constants import (
-    PROGRESS_FILE, SLEEP_FILE, GOAL_FILE, STREAK_FILE, WORKOUT_FILE
+    PROGRESS_FILE, SLEEP_FILE, GOAL_FILE, STREAK_FILE, WORKOUT_FILE, COACH_HISTORY_FILE
 )
 from utils.gemini import ask_gemini
 from utils.escape import escape_markdown
-from utils.constants import COACH_HISTORY_FILE
-from utils.json_store import save_json
-from datetime import datetime
 from prompts.coach_prompt import build_simple_coach_prompt
+from utils.waiting_state import set_coach_mode, is_in_coach_mode
 
 def get_last_n_days(n):
     today = datetime.now()
     return [(today - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(n)]
 
-
 async def coach(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_input = " ".join(context.args)
     user_id = str(update.message.from_user.id)
+    text = update.message.text.strip()
 
-    if not user_input:
-        await update.message.reply_text(
-            "🧠 Use like:\n`/coach I'm feeling lazy today`",
-            parse_mode="Markdown"
-        )
+    if text.lower().startswith("/exitcoach"):
+        set_coach_mode(user_id, False)
+        await update.message.reply_text("👋Coach mode exited. See you next time!")
         return
 
-    # Load all user data
+    if text.lower().startswith("/coach"):
+        set_coach_mode(user_id, True)
+        message_text = text[6:].strip()
+
+        await update.message.reply_text(
+            "🧠Coach mode activated. Let’s go!\nType anything, I’m listening..."
+        )
+
+        if not message_text:
+            return  # Wait for next message
+
+        context.args = message_text.split()
+
+    elif is_in_coach_mode(user_id):
+        context.args = text.split()
+    else:
+        return
+
+    # Load user data
     progress = load_json(PROGRESS_FILE)
     sleep = load_json(SLEEP_FILE)
     goals = load_json(GOAL_FILE)
@@ -47,40 +60,35 @@ async def coach(update: Update, context: ContextTypes.DEFAULT_TYPE):
         sleep_hours = sleep.get(user_id, {}).get(day, "N/A")
         summary_lines.append(f"{day} - 🏋️ {list(workout_done.keys()) or 'None'}, 😴 {sleep_hours} hrs")
 
-        # Load recent coach chats for context
+    # Recent coach history
     coach_data = load_json(COACH_HISTORY_FILE)
     chat_history = coach_data.get(user_id, [])
     recent_chats = chat_history[-3:] if chat_history else []
 
-    # Build Gemini prompt
+    # Build prompt
     prompt = build_simple_coach_prompt(
-    user_input=user_input,
-    streak_info=streak_info,
-    goal=goal,
-    selected_workouts=selected_workouts,
-    summary_lines=summary_lines,
-    recent_chats=recent_chats
-)
+        user_input=" ".join(context.args),
+        streak_info=streak_info,
+        goal=goal,
+        selected_workouts=selected_workouts,
+        summary_lines=summary_lines,
+        recent_chats=recent_chats
+    )
 
-
-
+    # Ask Gemini
     reply = ask_gemini(prompt)
     safe_reply = escape_markdown(reply)
 
     await update.message.reply_text(
-        f"*🗣️Coach:*\n{safe_reply}",
+        f"*🗣️ Coach:*\n{safe_reply}",
         parse_mode="MarkdownV2"
     )
 
-        # Save coach chat data
-    coach_data = load_json(COACH_HISTORY_FILE)
-
-    if user_id not in coach_data:
-        coach_data[user_id] = []
-
+    # Save history
+    coach_data[user_id] = coach_data.get(user_id, [])
     coach_data[user_id].append({
         "timestamp": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        "message": user_input,
+        "message": " ".join(context.args),
         "reply": reply,
         "streak": streak_info['streak'],
         "workouts": selected_workouts,

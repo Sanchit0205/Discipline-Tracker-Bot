@@ -1,4 +1,4 @@
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler, filters,ContextTypes
 from keep_alive import keep_alive
 import asyncio, nest_asyncio
 import asyncio
@@ -13,12 +13,24 @@ from commands.coach import coach
 from commands.analyze import analyze
 from commands.suggest import suggest
 from commands.feedback import feedback
+from utils.waiting_state import is_in_coach_mode
+from telegram import Update
 
 
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
     raise ValueError("❌ BOT_TOKEN not found. Check your .env file and variable name.")
+
+async def smart_text_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = str(update.message.from_user.id)
+    text = update.message.text.strip().lower()
+
+    if text.startswith("/coach") or is_in_coach_mode(user_id):
+        await coach(update, context)
+    else:
+        await handle_workout_count(update, context)
+
 
 # Start bot
 keep_alive()
@@ -39,11 +51,14 @@ async def main():
     app.add_handler(CommandHandler("sleepstatus", sleep_status))
     app.add_handler(CommandHandler("mysettings", my_settings))
     app.add_handler(CallbackQueryHandler(button_handler))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_workout_count))
-    app.add_handler(CommandHandler("coach", coach))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, smart_text_router))
     app.add_handler(CommandHandler("analyze", analyze))
     app.add_handler(CommandHandler("suggest", suggest))
     app.add_handler(CommandHandler("feedback", feedback))
+    app.add_handler(CommandHandler("coach", coach))       # ✅ Add this
+    app.add_handler(CommandHandler("exitcoach", coach))   # ✅ Add this
+
+    
 
 
     await start_scheduler(app)

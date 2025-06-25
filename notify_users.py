@@ -34,12 +34,12 @@ else:
 
 # 📢 Your message
 message = (
-    "🚀 *Beta Launch: Smart AI Coach is Here!*\n\n"
-    "Your new AI-powered coach is now live — smarter, sharper, and more personal. 🧠💪\n"
-    "It understands your *mood*, *streak*, and *workouts* to guide you like a real trainer.\n\n"
-    "👉 Try it now: [/coach] - I'm tired but want to win!\n"
-    "_This is an early beta release — your feedback matters!_ 💬"
+    "🧠 *New Update! AI Coach is now smarter.*\n\n"
+    "No need to type '/coach' every time — just start chatting!\n"
+    "Use [/coach] to begin and [/exitcoach] to stop anytime.\n\n"
+    "Your coach now responds freely like a real trainer. 💬💪"
 )
+
 
 
 # 🔁 Async function to send to unnotified users only
