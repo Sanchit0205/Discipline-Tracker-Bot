@@ -12,6 +12,10 @@ from datetime import datetime, timedelta
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.message.from_user
     users = load_json(USER_FILE)
+
+    if not isinstance(users, list):
+        users = []
+
     if user.id not in users:
         users.append(user.id)
         save_json(USER_FILE, users)
